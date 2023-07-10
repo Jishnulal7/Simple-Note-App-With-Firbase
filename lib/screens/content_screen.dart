@@ -1,7 +1,17 @@
+// import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class ContentScreen extends StatelessWidget {
+class ContentScreen extends StatefulWidget {
   const ContentScreen({super.key});
+
+  @override
+  State<ContentScreen> createState() => _ContentScreenState();
+}
+
+class _ContentScreenState extends State<ContentScreen> {
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +30,8 @@ class ContentScreen extends StatelessWidget {
                 height: 50,
                 width: MediaQuery.of(context).size.width,
                 child: TextFormField(
-                  style: const TextStyle(color: Colors.white,fontSize: 15),
+                  controller: _titleController,
+                  style: const TextStyle(color: Colors.white, fontSize: 15),
                   maxLines: 5,
                   decoration: const InputDecoration(
                     border: InputBorder.none,
@@ -46,7 +57,8 @@ class ContentScreen extends StatelessWidget {
                 height: 250,
                 width: MediaQuery.of(context).size.width,
                 child: TextFormField(
-                  style: const TextStyle(color: Colors.white,fontSize: 20),
+                  controller: _descriptionController,
+                  style: const TextStyle(color: Colors.white, fontSize: 20),
                   maxLines: 15,
                   decoration: const InputDecoration(
                     border: InputBorder.none,
@@ -73,7 +85,11 @@ class ContentScreen extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.deepPurple),
                     onPressed: () {
-                      
+                      FirebaseFirestore.instance.collection("To-do").add({
+                        'title': _titleController.text,
+                        'description': _descriptionController.text
+                      });
+                      Navigator.pop(context);
                     },
                     child: const Text('Save'),
                   ),
