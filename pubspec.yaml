@@ -29,7 +29,9 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   camera: ^0.10.5+2
+  cloud_firestore: ^4.8.2
   cupertino_icons: ^1.0.2
+  firebase_core: ^2.14.0
   flutter:
     sdk: flutter
   flutter_speed_dial: ^7.0.0
