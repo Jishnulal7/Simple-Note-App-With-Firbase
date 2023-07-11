@@ -32,6 +32,7 @@ class _CameraScreenState extends State<CameraScreen> {
       }
       setState(() {});
     }).catchError((e) {
+      // ignore: avoid_print
       print(e);
     });
   }
@@ -40,11 +41,6 @@ class _CameraScreenState extends State<CameraScreen> {
   Widget build(BuildContext context) {
     if (cameraController.value.isInitialized) {
       return Scaffold(
-        appBar: AppBar(
-          title: const Text('Camera'),
-          centerTitle: true,
-          backgroundColor: Colors.deepPurple,
-        ),
         body: Column(
           children: [
             const SizedBox(
@@ -63,28 +59,31 @@ class _CameraScreenState extends State<CameraScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                IconButton(
-                  onPressed: () {
-                    cameraController.takePicture().then((XFile? file) {
-                      if (mounted) {
-                        if (file != null) {
-                          print('Picture saved to ${file.path}');
+                InkWell(
+                  onTap: () {
+                    cameraController.takePicture().then(
+                      (XFile? file) {
+                        if (mounted) {
+                          if (file != null) {
+                            // ignore: avoid_print
+                            print('Picture saved to ${file.path}');
+                          }
                         }
-                      }
-                    });
+                      },
+                    );
                   },
-                  icon: const Icon(
+                  child: const Icon(
                     Icons.done,
                     size: 50,
                   ),
                 ),
                 const SizedBox(
-                  width: 50,
+                  width: 70,
                 ),
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.remove,
+                InkWell(
+                  onTap: () {},
+                  child: const Icon(
+                    Icons.close,
                     size: 50,
                   ),
                 )

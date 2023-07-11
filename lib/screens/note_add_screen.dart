@@ -1,30 +1,51 @@
-// import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class ContentScreen extends StatefulWidget {
-  const ContentScreen({super.key});
+class NoteAddScreen extends StatefulWidget {
+  const NoteAddScreen({super.key});
 
   @override
-  State<ContentScreen> createState() => _ContentScreenState();
+  State<NoteAddScreen> createState() => _NoteAddScreenState();
 }
 
-class _ContentScreenState extends State<ContentScreen> {
+class _NoteAddScreenState extends State<NoteAddScreen> {
+
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        
+        title: const Text('Add Note'),
+        centerTitle: true,
         backgroundColor: Colors.deepPurple,
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
+            const Padding(
+              padding: EdgeInsets.only(left: 8),
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  'Title',
+                  style: TextStyle(
+                    color: Colors.deepPurple,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 25,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 5,
+            ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(10.0),
               child: Container(
                 color: Colors.deepPurple,
                 height: 50,
@@ -37,10 +58,9 @@ class _ContentScreenState extends State<ContentScreen> {
                     border: InputBorder.none,
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                    hintText: 'Title',
+                    hintText: 'Task Title',
                     hintStyle: TextStyle(
                       color: Colors.white,
-                      fontWeight: FontWeight.bold,
                       fontSize: 20,
                     ),
                   ),
@@ -48,7 +68,24 @@ class _ContentScreenState extends State<ContentScreen> {
               ),
             ),
             const SizedBox(
-              height: 20,
+              height: 10,
+            ),
+            const Padding(
+              padding: EdgeInsets.only(left: 10),
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  'Description',
+                  style: TextStyle(
+                    color: Colors.deepPurple,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 25,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 5,
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -64,7 +101,7 @@ class _ContentScreenState extends State<ContentScreen> {
                     border: InputBorder.none,
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                    hintText: 'Start typing',
+                    hintText: 'Start typing...........',
                     hintStyle: TextStyle(
                       color: Colors.white,
                       fontSize: 25,
@@ -85,10 +122,12 @@ class _ContentScreenState extends State<ContentScreen> {
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.deepPurple),
                     onPressed: () {
-                      FirebaseFirestore.instance.collection("To-do").add({
-                        'title': _titleController.text,
-                        'description': _descriptionController.text
-                      });
+                      FirebaseFirestore.instance.collection("To-do").add(
+                        {
+                          'title': _titleController.text,
+                          'description': _descriptionController.text
+                        },
+                      );
                       Navigator.pop(context);
                     },
                     child: const Text('Save'),
@@ -96,7 +135,9 @@ class _ContentScreenState extends State<ContentScreen> {
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.deepPurple),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
                     child: const Text('Cancel'),
                   )
                 ],
