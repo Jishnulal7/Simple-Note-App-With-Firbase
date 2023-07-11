@@ -185,7 +185,10 @@ class FirstPage extends StatelessWidget {
                                     fontSize: 25,
                                     fontWeight: FontWeight.bold,
                                   ),
-                                ),const SizedBox(height: 25,),
+                                ),
+                                const SizedBox(
+                                  height: 25,
+                                ),
                                 Text(
                                   document['description'],
                                   style: const TextStyle(
@@ -195,13 +198,6 @@ class FirstPage extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            // subtitle: Text(
-                            //   document['description'],
-                            //   style: const TextStyle(
-                            //     color: Colors.white,
-                            //     fontSize: 20,
-                            //   ),
-                            // ),
                           ),
                         ),
                       ),
