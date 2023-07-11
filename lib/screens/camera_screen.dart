@@ -1,8 +1,9 @@
+
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 
 class CameraScreen extends StatefulWidget {
-  const CameraScreen({super.key});
+  const CameraScreen({super.key,});
 
   @override
   State<CameraScreen> createState() => _CameraScreenState();
@@ -10,7 +11,7 @@ class CameraScreen extends StatefulWidget {
 
 class _CameraScreenState extends State<CameraScreen> {
   late List<CameraDescription> cameras;
-  late CameraController cameraController;
+  CameraController? cameraController;
 
   @override
   void initState() {
@@ -26,20 +27,20 @@ class _CameraScreenState extends State<CameraScreen> {
       ResolutionPreset.high,
       enableAudio: false,
     );
-    await cameraController.initialize().then((value) {
-      if (!mounted) {
-        return;
+    try {
+      await cameraController?.initialize();
+      if (mounted) {
+        setState(() {});
       }
-      setState(() {});
-    }).catchError((e) {
-      // ignore: avoid_print
-      print(e);
-    });
+    } catch (e) {
+      // Handle camera initialization error
+      print('Failed to initialize camera: $e');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (cameraController.value.isInitialized) {
+    if (cameraController?.value.isInitialized ?? false) {
       return Scaffold(
         body: Column(
           children: [
@@ -50,7 +51,7 @@ class _CameraScreenState extends State<CameraScreen> {
               child: SizedBox(
                 height: 500,
                 width: 300,
-                child: CameraPreview(cameraController),
+                child: CameraPreview(cameraController!),
               ),
             ),
             const SizedBox(
@@ -61,11 +62,10 @@ class _CameraScreenState extends State<CameraScreen> {
               children: [
                 InkWell(
                   onTap: () {
-                    cameraController.takePicture().then(
+                    cameraController!.takePicture().then(
                       (XFile? file) {
                         if (mounted) {
                           if (file != null) {
-                            // ignore: avoid_print
                             print('Picture saved to ${file.path}');
                           }
                         }

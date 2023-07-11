@@ -1,9 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_task/screens/camera_screen.dart';
-import 'package:firebase_task/screens/login_screen.dart';
 import 'package:firebase_task/screens/note_add_screen.dart';
 import 'package:firebase_task/screens/note_view_screen.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
@@ -45,16 +43,16 @@ class _HomeScreenState extends State<HomeScreen> {
       },
       child: Scaffold(
         appBar: AppBar(
-          leading: IconButton(
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const SignInScreen(),
-                  ));
-            },
-            icon: const Icon(Icons.arrow_back),
-          ),
+          // leading: IconButton(
+          //   onPressed: () {
+          //     Navigator.push(
+          //         context,
+          //         MaterialPageRoute(
+          //           builder: (context) =>  const SignInScreen(),
+          //         ));
+          //   },
+          //   icon: const Icon(Icons.arrow_back),
+          // ),
           backgroundColor: Colors.deepPurple,
           title: const Text('Note App'),
           centerTitle: true,
@@ -125,7 +123,7 @@ class FloatingButton extends StatelessWidget {
               ),
             );
           },
-        )
+        ),
       ],
     );
   }
@@ -173,39 +171,37 @@ class FirstPage extends StatelessWidget {
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: 100,
+                        child: Card(
                           color: Colors.deepPurple,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      document['title'],
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 25,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 25,
-                                    ),
-                                    Text(
-                                      document['description'],
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 20,
-                                      ),
-                                    ),
-                                  ],
+                          child: ListTile(
+                            contentPadding: const EdgeInsets.all(5),
+                            title: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  document['title'],
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),const SizedBox(height: 25,),
+                                Text(
+                                  document['description'],
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
+                            // subtitle: Text(
+                            //   document['description'],
+                            //   style: const TextStyle(
+                            //     color: Colors.white,
+                            //     fontSize: 20,
+                            //   ),
+                            // ),
                           ),
                         ),
                       ),
