@@ -11,7 +11,7 @@ class NoteAddScreen extends StatefulWidget {
 class _NoteAddScreenState extends State<NoteAddScreen> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,6 +22,7 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
         backgroundColor: Colors.deepPurple,
       ),
       body: Form(
+        key: _formKey,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -47,10 +48,10 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
                 padding: const EdgeInsets.all(10.0),
                 child: Container(
                   color: Colors.deepPurple,
-                  height: 50,
+                  height: 55,
                   width: MediaQuery.of(context).size.width,
                   child: TextFormField(
-                     validator: (value) {
+                    validator: (value) {
                       if (value!.isEmpty) {
                         return 'Enter data';
                       }
@@ -58,7 +59,7 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
                     },
                     controller: _titleController,
                     style: const TextStyle(color: Colors.white, fontSize: 15),
-                    maxLines: 5,
+                    // maxLines: 2,
                     decoration: const InputDecoration(
                       border: InputBorder.none,
                       contentPadding:
@@ -107,7 +108,7 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
                     },
                     controller: _descriptionController,
                     style: const TextStyle(color: Colors.white, fontSize: 20),
-                    maxLines: 15,
+                    maxLines: 5,
                     decoration: const InputDecoration(
                       border: InputBorder.none,
                       contentPadding:
@@ -133,13 +134,15 @@ class _NoteAddScreenState extends State<NoteAddScreen> {
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.deepPurple),
                       onPressed: () {
-                        FirebaseFirestore.instance.collection("To-do").add(
-                          {
-                            'title': _titleController.text,
-                            'description': _descriptionController.text
-                          },
-                        );
-                        Navigator.pop(context);
+                        if (_formKey.currentState!.validate()) {
+                          FirebaseFirestore.instance.collection("To-do").add(
+                            {
+                              'title': _titleController.text,
+                              'description': _descriptionController.text,
+                            },
+                          );
+                          Navigator.pop(context);
+                        }
                       },
                       child: const Text('Save'),
                     ),

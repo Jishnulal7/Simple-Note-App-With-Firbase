@@ -190,7 +190,7 @@ class _CameraScreenState extends State<CameraScreen> {
                       onPressed: () {
                         getImage(source: ImageSource.gallery);
                       },
-                      child: const Text('Select Imsge'),
+                      child: const Text('Select Image'),
                     ),
                   ),
                 ],

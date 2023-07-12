@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_task/screens/camera_screen.dart';
 import 'package:firebase_task/screens/note_add_screen.dart';
 import 'package:firebase_task/screens/note_view_screen.dart';
+import 'package:firebase_task/screens/signin_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -13,6 +14,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+ 
   bool float = false;
   PageController _pagecontroller = PageController();
 
@@ -30,6 +32,21 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  Future<void> logout() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const SignInScreen(),
+        ),
+      );
+    } catch (e) {
+      // Handle any potential errors here
+      print('Error during logout: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -43,16 +60,12 @@ class _HomeScreenState extends State<HomeScreen> {
       },
       child: Scaffold(
         appBar: AppBar(
-          // leading: IconButton(
-          //   onPressed: () {
-          //     Navigator.push(
-          //         context,
-          //         MaterialPageRoute(
-          //           builder: (context) =>  const SignInScreen(),
-          //         ));
-          //   },
-          //   icon: const Icon(Icons.arrow_back),
-          // ),
+          actions: [
+            IconButton(
+              onPressed: logout,
+              icon: const Icon(Icons.logout),
+            ),
+          ],
           backgroundColor: Colors.deepPurple,
           title: const Text('Note App'),
           centerTitle: true,
@@ -66,65 +79,21 @@ class _HomeScreenState extends State<HomeScreen> {
             const CameraScreen()
           ],
         ),
-        floatingActionButton: FloatingButton(isdialOpen: isdialOpen),
+        floatingActionButton: FloatingActionButton(
+            backgroundColor: Colors.white,
+            child: const Icon(
+              Icons.add,
+              color: Colors.deepPurple,
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const NoteAddScreen(),
+                ),
+              );
+            }),
       ),
-    );
-  }
-}
-
-class FloatingButton extends StatelessWidget {
-  const FloatingButton({
-    super.key,
-    required this.isdialOpen,
-  });
-
-  final ValueNotifier<bool> isdialOpen;
-
-  @override
-  Widget build(BuildContext context) {
-    return SpeedDial(
-      animatedIcon: AnimatedIcons.menu_close,
-      animatedIconTheme: const IconThemeData(
-        color: Colors.deepPurple,
-      ),
-      closeDialOnPop: true,
-      overlayOpacity: .5,
-      spaceBetweenChildren: 15,
-      overlayColor: Colors.transparent,
-      openCloseDial: isdialOpen,
-      backgroundColor: Colors.white,
-      children: [
-        SpeedDialChild(
-          child: const Icon(
-            Icons.note_add,
-            color: Colors.deepPurple,
-          ),
-          label: 'Add new',
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const NoteAddScreen(),
-              ),
-            );
-          },
-        ),
-        SpeedDialChild(
-          child: const Icon(
-            Icons.camera_alt,
-            color: Colors.deepPurple,
-          ),
-          label: 'Camera',
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const CameraScreen(),
-              ),
-            );
-          },
-        ),
-      ],
     );
   }
 }

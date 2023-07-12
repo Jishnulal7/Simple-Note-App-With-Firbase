@@ -1,11 +1,10 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_task/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class SignInScreen extends StatelessWidget {
-  const SignInScreen({super.key});
+  const SignInScreen({Key? key}) : super(key: key);
 
   Future<void> signInWithGoogle(BuildContext context) async {
     GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
@@ -17,11 +16,15 @@ class SignInScreen extends StatelessWidget {
     UserCredential userCredential =
         await FirebaseAuth.instance.signInWithCredential(credential);
 
-    // ignore: avoid_print
-    print(userCredential.user?.displayName);
-
     if (userCredential.user != null) {
-      // ignore: use_build_context_synchronously
+      String displayName = userCredential.user!.displayName ?? 'Unknown User';
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Logged in as $displayName'),
+        ),
+      );
+
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -29,7 +32,6 @@ class SignInScreen extends StatelessWidget {
         ),
       );
     } else {
-      // ignore: avoid_print
       print('Sign-in failed');
     }
   }
